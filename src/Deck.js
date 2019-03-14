@@ -8,6 +8,7 @@ import {
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
+const SWIPE_OUT_DURATION = 250;
 
 class Deck extends Component {
     constructor(props) {
@@ -21,9 +22,9 @@ class Deck extends Component {
             },
             onPanResponderRelease: (event, gesture) => {
                 if (gesture.dx > SWIPE_THRESHOLD) {
-                    console.log('Swiped right!');
+                    this.forceSwipeRight();
                 } else if (gesture.dx < -SWIPE_THRESHOLD) {
-                    console.log('Swiped Left!')
+                    console.log('Swiped Left!');
                 } else {
                     this.resetPosition();
                 }
@@ -31,6 +32,13 @@ class Deck extends Component {
         });
 
         this.state = { panResponder, position };
+    }
+
+    forceSwipeRight() {
+        Animated.timing(this.state.position, {
+            toValue: { x: SCREEN_WIDTH, y: 0 },
+            duration: SWIPE_OUT_DURATION
+        }).start();
     }
 
     resetPosition() {
@@ -56,11 +64,7 @@ class Deck extends Component {
         return this.props.data.map((item, index) => {
             if (index === 0) {
                 return (
-                    <Animated.View
-                        key={item.id}
-                        style={this.getCardStyle()}
-                        {...this.state.panResponder.panHandlers}
-                    >
+                    <Animated.View key={item.id} style={this.getCardStyle()} {...this.state.panResponder.panHandlers}>
                         {this.props.renderCard(item)}
                     </Animated.View>
                 )
