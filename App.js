@@ -47,7 +47,7 @@ export default class App extends React.Component {
           title='Get more'
         />
       </Card>
-    )
+    );
   }
 
   render() {
