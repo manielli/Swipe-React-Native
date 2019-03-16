@@ -99,7 +99,7 @@ class Deck extends Component {
             return (
                 <View key={item.id} style={styles.cardStyle} >{this.props.renderCard(item)}</View>
             );
-        });
+        }).reverse();
     }
 
     render() {
